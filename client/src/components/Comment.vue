@@ -1,9 +1,6 @@
 <template>
     <div class="comment">
         <p> {{ comment.text }} </p>
-        <p> {{ comment }} </p>
-        <p> {{ commentID }} </p>
-    
     </div>
 </template>
 
@@ -20,12 +17,11 @@ export default {
 
     methods: {
         getComment() {
-            api.comments.getOne(commentID).then(comment => { this.comment = comment })
-
+            api.comments.getOne(this.commentID).then(comment => { this.comment = comment })
         }
     },
     created() {
-        getComment();
+        this.getComment();
     }
 
 }

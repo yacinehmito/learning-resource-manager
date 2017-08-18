@@ -53,7 +53,7 @@
         <div class="box" v-if="browsing">
             <section class="section">
                 <div class="container">
-                    <comment :key=comment._id v-for="comment in item.comments" :commentID="comment"></comment>
+                    <comment v-for="comment in item.comments" :commentID="comment" :key=comment._id></comment>
                 </div>
             </section>
         </div>
@@ -68,7 +68,6 @@ export default {
     name: 'item',
     data() {
         return {
-            self: { comments: [123, 456] },
             username: null,
             currentComment: {
                 text: "",

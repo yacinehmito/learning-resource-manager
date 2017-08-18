@@ -24,13 +24,22 @@ router.post("/", (req, res, next) => {
     comments,
     upvotes
   });
-  newItem.save().then(data => res.json(newItem)).catch(err => next(err));
+  newItem
+    .save()
+    .then(item => {
+      User.findOne({ _id: contributor }).then(user => {
+        user.items.push(item._id);
+        user.save();
+      });
+      return res.json(item);
+    })
+    .catch(err => next(err));
 });
 
 router.get("/:id", (req, res, next) => {
   Item.findOne({ _id: req.params.id })
     .then(item => {
-      res.json(item);
+      return res.json(item);
     })
     .catch(err => {
       next(err);
@@ -49,13 +58,9 @@ router.put("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-  Item.remove({ _id: req.params.id })
-    .then(msg => {
-      res.json(msg);
-    })
-    .catch(err => {
-      next(err);
-    });
+  Item.remove({ _id: req.params.id }).then(msg => res.json(msg)).catch(err => {
+    next(err);
+  });
 });
 
 router.delete("/:id", (req, res, next) => {
@@ -66,7 +71,7 @@ router.delete("/:id", (req, res, next) => {
         user.items.splice(user.items.indexOf(itemId), 1);
         user.save();
       });
-      res.json(data);
+      return res.json(data);
     })
     .catch(err => {
       next(err);

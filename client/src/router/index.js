@@ -6,11 +6,11 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    {
-      path: "/subject/:name",
-      name: "Feed",
-      component: Feed
-    },
+    //{
+    //path: "/subject/:name",
+    //name: "Feed",
+    //component: Feed
+    //},
     {
       path: "/",
       name: "Feed",
