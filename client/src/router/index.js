@@ -1,15 +1,20 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Vue from "vue";
+import Router from "vue-router";
+import Feed from "@/components/Feed";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Hello',
-      component: Hello
+      path: "/subject/:name",
+      name: "Feed",
+      component: Feed
+    },
+    {
+      path: "/",
+      name: "Feed",
+      component: Feed
     }
   ]
-})
+});
