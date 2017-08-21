@@ -75,6 +75,8 @@
 
 
 <script>
+const dateFormat = require('dateformat');
+
 export default {
   name: "app",
   data() {

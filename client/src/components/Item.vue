@@ -1,6 +1,6 @@
 <template>
     <div class="item">
-        {{ item }}
+    
         <div class="box">
             <article class="media">
                 <div class="media-left">
@@ -14,7 +14,11 @@
                             <strong> {{ item.headline }} </strong>
                             <small> @{{ username }} </small>
                             <small> [ score: {{ item.upvotes.length }} ] </small>
-                            <br> {{ item.description }}
+                            <br>
+                            <small> {{ parsedTimestamp }} </small>
+                            <br>
+                            <a :href="item.url"> {{ item.url }} </a>
+                            <br> {{ placeholder }} {{ item.description }}
                         </p>
                     </div>
                     <nav class="level is-mobile">
@@ -52,17 +56,18 @@
     
         <div class="box" v-if="browsing">
             <section class="section">
-                <div class="container">
-                    <comment v-for="comment in item.comments" :commentID="comment" :key=comment._id></comment>
-                </div>
+    
+                <comment v-for="comment in item.comments" :commentID="comment" :key=comment._id></comment>
+    
             </section>
         </div>
-    
+        <br>
     </div>
 </template>
 
 <script>
 import api from "@/api";
+import dateformat from "dateformat";
 import comment from "./Comment";
 export default {
     name: 'item',
@@ -74,7 +79,8 @@ export default {
                 id: null
             },
             commenting: false,
-            browsing: false
+            browsing: false,
+            placeholder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
         }
     },
     props: [
@@ -131,9 +137,9 @@ export default {
 
     },
     computed: {
-
-
-
+        parsedTimestamp() {
+            return this.item.timestamp ? dateformat(new Date(this.item.timestamp), "mmmm dS, HH:MM") : null
+        }
 
     },
     components: {

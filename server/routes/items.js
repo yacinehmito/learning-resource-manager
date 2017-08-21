@@ -15,14 +15,24 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { url, headline, contributor, comments, upvotes } = req.body;
+  const {
+    url,
+    headline,
+    contributor,
+    comments,
+    upvotes,
+    description,
+    timestamp
+  } = req.body;
 
   const newItem = new Item({
     url,
     headline,
     contributor,
     comments,
-    upvotes
+    upvotes,
+    description,
+    timestamp
   });
   newItem
     .save()
@@ -65,7 +75,7 @@ router.delete("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
   let itemId = req.params.id;
-  Comment.remove({ _id: itemId })
+  Item.remove({ _id: itemId })
     .then(data => {
       User.findOne({ items: { $in: [itemId] } }).then(user => {
         user.items.splice(user.items.indexOf(itemId), 1);
