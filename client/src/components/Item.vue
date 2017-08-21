@@ -1,7 +1,7 @@
 <template>
     <div class="item">
     
-        <div class="box">
+        <div class="box item-box">
             <article class="media">
                 <div class="media-left">
                     <figure class="image is-64x64">
@@ -24,18 +24,18 @@
                     <nav class="level is-mobile">
                         <div class="level-left">
                             <a class="level-item">
-                                <span class="icon is-small">
-                                    <i class="fa fa-reply" @click="startComment"></i>
+                                <span class="icon">
+                                    <i class="fa fa-comment" @click="startComment" :class="{'used': commenting}"></i>
                                 </span>
                             </a>
                             <a class="level-item">
-                                <span class="icon is-small">
-                                    <i class="fa fa-retweet" @click="browse"></i>
+                                <span class="icon">
+                                    <i class="fa fa-eye" @click="browse" :class="{'used': browsing}"></i>
                                 </span>
                             </a>
                             <a class="level-item">
-                                <span class="icon is-small">
-                                    <i class="fa fa-heart" @click="upvote"></i>
+                                <span class="icon" v-bind:class="{'used': hasVoted}">
+                                    <i class="fa fa-thumbs-up" @click="upvote"></i>
                                 </span>
                             </a>
                         </div>
@@ -45,21 +45,42 @@
         </div>
     
         <div class="box" v-if="commenting">
+    
+            <button class="button is-small is-success" @click="postComment">
+                <span class="icon is-small">
+                    <i class="fa fa-check"></i>
+                </span>
+            </button>
+            &nbsp;
+    
+            <button class="button is-small is-danger" @click="cancelComment">
+                <span class="icon is-small">
+                    <i class="fa fa-times"></i>
+                </span>
+            </button>
+    
+            <br>
+            <br>
+    
             <div class="field">
                 <div class="control">
-                    <textarea class="textarea is-primary" type="text" placeholder="Primary textarea" v-model="currentComment.text"></textarea>
+                    <textarea class="textarea is-primary is-medium" type="text" :placeholder="commentDefault" v-model="currentComment.text"></textarea>
                 </div>
             </div>
-            <button class="button is-small" @click="postComment">Post</button>
-            <button class="button is-small" @click="cancelComment">X</button>
+    
         </div>
     
         <div class="box" v-if="browsing">
+            <button class="button is-small is-success" @click="browse">
+                <span class="icon is-small">
+                    <i class="fa fa-check"></i>
+                </span>
+            </button>
+    
             <section class="section">
-    
                 <comment v-for="comment in item.comments" :commentID="comment" :key=comment._id></comment>
-    
             </section>
+    
         </div>
         <br>
     </div>
@@ -80,7 +101,9 @@ export default {
             },
             commenting: false,
             browsing: false,
-            placeholder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+            placeholder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+            commentDefault: "Share your thoughts, ask a question or answer one :) ",
+            hasVoted: false
         }
     },
     props: [
@@ -103,11 +126,15 @@ export default {
         },
 
         upvote() {
+            this.hasVoted = true;
             this.item.upvotes.push(this.item.contributor);
             api.items.editOne(this.item._id, { upvotes: this.item.upvotes }).catch(err => { alert("problem") })
         },
 
         startComment() {
+             if (this.browsing) {
+                this.browse();
+            }
             this.commenting = true;
         },
 
@@ -125,13 +152,19 @@ export default {
         },
 
         cancelComment() {
-            this.commenting = false;
-            this.currentComment.id = null;
-            this.currentComment.text = "";
+            if (this.commenting) {
+                this.commenting = false;
+                this.currentComment.id = null;
+                this.currentComment.text = "";
+            }
+
         },
 
         browse() {
             this.browsing = !this.browsing;
+            if (this.commenting) {
+                this.cancelComment();
+            }
         }
 
 
@@ -155,5 +188,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.item-box {
+    background-color: rgba(186, 166, 170, 0.2);
+}
 
+.used {
+    color: rgba(0, 0, 0, 0.1);
+}
 </style>

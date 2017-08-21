@@ -24,6 +24,10 @@ const itemSchema = new Schema({
   timestamp: {
     type: Date,
     default: Date.now
+  },
+  subject: {
+    type: String,
+    required: [true, "subject is required"]
   }
 });
 

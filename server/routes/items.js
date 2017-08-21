@@ -22,7 +22,8 @@ router.post("/", (req, res, next) => {
     comments,
     upvotes,
     description,
-    timestamp
+    timestamp,
+    subject
   } = req.body;
 
   const newItem = new Item({
@@ -32,7 +33,8 @@ router.post("/", (req, res, next) => {
     comments,
     upvotes,
     description,
-    timestamp
+    timestamp,
+    subject
   });
   newItem
     .save()

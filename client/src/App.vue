@@ -12,55 +12,46 @@
         </a>
   
         <div class="navbar-dropdown">
-          <a class="navbar-item">
-            HTML
-          </a>
-          <a class="navbar-item is-active">
-            CSS
-          </a>
-          <a class="navbar-item">
-            Vanilla JS
-          </a>
-          <a class="navbar-item">
-            More nerdy stuff
-          </a>
-          <a class="navbar-item">
-            Another
-          </a>
-          <a class="navbar-item">
-            And another
-          </a>
-          <hr class="navbar-divider">
-          <div class="navbar-item">
+          <div @click="falsifyNavbar">
+            <router-link 
+            :to="{ name: 'Feed', params: { slug: subject }}" 
+            class="navbar-item" v-for="subject in subjects" 
+            :key="subject">
+              {{ subject.toUpperCase() }}
+            </router-link>
+          </div>
+  
+          <hr class=" navbar-divider ">
+          <div class="navbar-item ">
             Version 0.5.1
           </div>
         </div>
       </div>
     </nav>
   
-    <div class="actual-body" @click="falisfyNavbar">
+    <div class="actual-body " @click="falsifyNavbar ">
   
-      <section class="hero is-danger">
-        <div class="hero-body">
-          <div class="container">
-            <h1 class="title">
+      <section class="hero is-danger ">
+        <div class="hero-body ">
+          <div class="container ">
+            <h1 class="title ">
               IronSomething
             </h1>
-            <h2 class="subtitle">
-              Where you go for that "Ah ha!" moment
+            <h2 class="subtitle ">
+              Where you go for that "Ah ha! " moment
             </h2>
           </div>
         </div>
       </section>
   
-      <section class="section">
+      <section class="section ">
         <router-view></router-view>
       </section>
     </div>
   
-    <footer class="footer">
-      <div class="container">
-        <div class="content has-text-centered  is-small">
+    <footer class="footer ">
+      <div class="container ">
+        <div class="content has-text-centered is-small ">
           <p>
             <strong>Project</strong> by
             <p> Michael Lande Blau </p>
@@ -75,6 +66,7 @@
 
 
 <script>
+import index from "@/router/index";
 const dateFormat = require('dateformat');
 
 export default {
@@ -82,15 +74,24 @@ export default {
   data() {
     return {
       navbarActive: false,
-      subjects: [1, 2, 3]
+      subjects: ["css", "html"],
     };
   },
   methods: {
     toggleNavbar() {
       this.navbarActive = !this.navbarActive;
     },
-    falisfyNavbar() {
+    falsifyNavbar() {
       this.navbarActive = false;
+    }
+  },
+  computed: {
+    prettySubjectList() {
+      return this.subjects.map(subject =>
+        subject.toUpperCase()
+        //subject.charAt(0).toUpperCase() + subject.slice(1)
+      )
+
     }
   }
 };

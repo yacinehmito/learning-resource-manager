@@ -7,7 +7,10 @@ const auth = {
   signup: credentials =>
     server.post("/signup", credentials).then(res => res.data),
 
-  login: credentials => server.post("/login", credentials).then(res => res.data)
+  login: credentials =>
+    server.post("/login", credentials).then(res => res.data).catch(err => {
+      throw err.response.data;
+    })
 };
 
 const users = {

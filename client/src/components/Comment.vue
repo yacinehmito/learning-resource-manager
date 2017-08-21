@@ -14,8 +14,10 @@
                         <br>
                         <small> {{ parsedTimestamp }} </small>
                         <br>
-                        <p> {{ comment.text }} {{ placeholder }}
-                        </p>
+                        <div class="box">
+                            <p> {{ comment.text }} {{ placeholder }}
+                            </p>
+                        </div>
                     </p>
                 </div>
     

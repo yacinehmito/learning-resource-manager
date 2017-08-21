@@ -1,7 +1,8 @@
 <template>
   <div class="feed">
+    {{ currentSubject }}
     <div class="container">
-      <item v-for="item in items" :key="item._id" :item="item">
+      <item v-for="item in filteredItems" :key="item._id" :item="item">
   
       </item>
     </div>
@@ -16,7 +17,7 @@ export default {
   data() {
     return {
       items: [],
-      currentSubject: "FUN"
+      currentSubject: null
     }
   },
   methods: {
@@ -24,11 +25,16 @@ export default {
       api.items.getAll().then(items => {
         this.items = items
       })
+    },
+    getSubject() {
+      this.currentSubject = this.$route.params.slug;
     }
   },
   computed: {
-    filterBySubject() {
-
+    filteredItems() {
+      return this.items.filter(item => {
+        return item.subject === this.currentSubject;
+      })
     },
     sortByVote() {
 
@@ -36,12 +42,21 @@ export default {
   },
   created() {
     this.getItems();
+    this.getSubject();
+    console.log(this.currentSubject)
 
 
   },
   components: {
     item
+  },
+
+  watch: {
+    "$route"(to, from) {
+      this.getSubject();
+    }
   }
+
 }
 </script>
 
