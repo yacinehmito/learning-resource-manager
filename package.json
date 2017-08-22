@@ -1,0 +1,21 @@
+{
+  "name": "project3",
+  "version": "1.0.0",
+  "description": "This web app complements simple online learning platforms, providing students and teachers with a friendly UI for adding, \r managing and sharing extra learning resources. \r First iteration will be designed for Ironhack online learning platform, \r and tested with students of next cohort, in order to provide feedback and implement solutions later on.",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "cd server && npm install",
+    "start": "cd server && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlande/learning-resource-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlande/learning-resource-manager/issues"
+  },
+  "homepage": "https://github.com/mlande/learning-resource-manager#readme"
+}

@@ -1,3 +1,5 @@
+require("dotenv").config();
+const history = require("connect-history-api-fallback");
 express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
@@ -5,7 +7,8 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/resource-app", { useMongoClient: true });
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
+//mongoose.connect("mongodb://localhost/resource-app", { useMongoClient: true });
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -62,6 +65,10 @@ app.use("/api/users", usersRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/items", itemsRoutes);
 app.use("/api/subjects", subjectsRoutes);
+
+const clientRoot = path.join(__dirname, "../client/dist");
+app.use("/", express.static(clientRoot));
+app.use(history("index.html", { root: clientRoot }));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
