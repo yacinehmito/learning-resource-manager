@@ -18,7 +18,7 @@
                             <small> {{ parsedTimestamp }} </small>
                             <br>
                             <a :href="item.url"> {{ item.url }} </a>
-                            <br> {{ placeholder }} {{ item.description }}
+                            <br> {{ item.description }}
                         </p>
                     </div>
                     <nav class="level is-mobile">
@@ -126,13 +126,16 @@ export default {
         },
 
         upvote() {
-            this.hasVoted = true;
-            this.item.upvotes.push(this.item.contributor);
-            api.items.editOne(this.item._id, { upvotes: this.item.upvotes }).catch(err => { alert("problem") })
+            if (!this.hasVoted) {
+                this.hasVoted = true;
+                this.item.upvotes.push(window.localStorage.id);
+                api.items.editOne(this.item._id, { upvotes: this.item.upvotes }).catch(err => { alert("problem") })
+            }
+
         },
 
         startComment() {
-             if (this.browsing) {
+            if (this.browsing) {
                 this.browse();
             }
             this.commenting = true;
@@ -142,7 +145,7 @@ export default {
             this.commenting = false;
 
             api.comments.postOne({
-                author: "5995a8b388f0d588acea8e14",
+                author: this.$root.user.id,
                 text: this.currentComment.text
             }).then(comment => {
                 this.currentComment.id = comment._id;
@@ -165,6 +168,12 @@ export default {
             if (this.commenting) {
                 this.cancelComment();
             }
+        },
+
+        checkIfVoted() {
+            if (this.item.upvotes.includes(window.localStorage.id)) {
+                this.hasVoted = true;
+            }
         }
 
 
@@ -181,6 +190,7 @@ export default {
 
     created() {
         this._getUsername();
+        this.checkIfVoted();
 
     }
 }

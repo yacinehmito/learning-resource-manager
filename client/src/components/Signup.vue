@@ -1,5 +1,6 @@
 <template>
     <div class="signup">
+        {{ msg }} {{ err }}
         <div class="login-wrapper columns">
     
             <section class="hero">
@@ -9,7 +10,7 @@
     
                         <div class="login-form">
                             <p class="control has-icon has-icon-right">
-                                <input class="input email-input" type="text" placeholder="your email">
+                                <input class="input email-input" v-model="email" type="email" placeholder="your email">
                                 <span class="icon user">
                                     <i class="fa fa-user"></i>
                                 </span>
@@ -17,7 +18,7 @@
                             <br>
     
                             <p class="control has-icon has-icon-right">
-                                <input class="input email-input" type="text" placeholder="choose a username">
+                                <input class="input email-input" v-model="username" type="text" placeholder="choose a username">
                                 <span class="icon user">
                                     <i class="fa fa-user"></i>
                                 </span>
@@ -25,14 +26,14 @@
                             <br>
     
                             <p class="control has-icon has-icon-right">
-                                <input class="input password-input" type="password" placeholder="choose a password">
+                                <input class="input password-input" v-model="password" type="password" placeholder="choose a password">
                                 <span class="icon user">
                                     <i class="fa fa-lock"></i>
                                 </span>
                             </p>
                             <br>
                             <p class="control login">
-                                <button class="button is-success is-outlined is-large">Signup</button>
+                                <button class="button is-success is-outlined is-large" @click="signup">Signup</button>
                             </p>
     
                         </div>
@@ -51,8 +52,28 @@ export default {
     name: 'signup',
     data() {
         return {
+            username: null,
+            password: null,
+            email: null,
+            err: null,
+            msg: null
         }
     },
+    methods: {
+        signup() {
+            api.auth.signup
+                ({
+                    username: this.username, password: this.password, email: this.email
+                })
+                .then(msg => {
+                    this.msg = msg;
+                    //this.$root.token = token
+                })
+                .catch(err => {
+                    this.err = err;
+                })
+        }
+    }
 }
 </script>
 

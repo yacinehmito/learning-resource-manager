@@ -48,11 +48,12 @@ const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const commentsRoutes = require("./routes/comments");
 const itemsRoutes = require("./routes/items");
+const subjectsRoutes = require("./routes/subjects");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.setHeader("Access-Control-Allow-Headers", "content-type, Authorization");
   next();
 });
 
@@ -60,6 +61,7 @@ app.use("/api", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/items", itemsRoutes);
+app.use("/api/subjects", subjectsRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

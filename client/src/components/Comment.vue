@@ -10,12 +10,12 @@
                 <div class="content">
                     <p>
                         <strong> </strong>
-                        <small> @some-user </small>
+                        <small> @{{ authorName }} </small>
                         <br>
                         <small> {{ parsedTimestamp }} </small>
                         <br>
                         <div class="box">
-                            <p> {{ comment.text }} {{ placeholder }}
+                            <p> {{ comment.text }}
                             </p>
                         </div>
                     </p>
@@ -37,19 +37,18 @@ export default {
     data() {
         return {
             comment: {},
-            placeholder: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, 
-                            sunt in culpa qui officia deserunt mollit anim id est laborum.`
+            authorName: ""
         }
     },
 
     methods: {
         getComment() {
-            api.comments.getOne(this.commentID).then(comment => { this.comment = comment })
+            api.comments.getOne(this.commentID).then(comment => {
+                this.comment = comment
+                api.users.getOne(comment.author).then(user => {
+                    this.authorName = user.username;
+                })
+            })
         }
     },
     computed: {

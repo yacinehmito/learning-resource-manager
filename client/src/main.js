@@ -15,9 +15,11 @@ new Vue({
   template: "<App/>",
   components: { App },
   data: {
-    userID: null,
-    username: null,
-    token: null
+    user: {
+      id: null,
+      username: "",
+      token: null
+    }
   },
   methods: {
     logout() {}

@@ -1,11 +1,16 @@
 <template>
   <div class="feed">
-    {{ currentSubject }}
-    <div class="container">
-      <item v-for="item in filteredItems" :key="item._id" :item="item">
   
+    <div v-if="currentSubject === 'all' || currentSubject === null" class="container">
+      <item v-for="item in items" :key="item._id" :item="item">
       </item>
     </div>
+  
+    <div v-else class="container">
+      <item v-for="item in filteredItems" :key="item._id" :item="item">
+      </item>
+    </div>
+  
   </div>
 </template>
 
@@ -43,7 +48,6 @@ export default {
   created() {
     this.getItems();
     this.getSubject();
-    console.log(this.currentSubject)
 
 
   },

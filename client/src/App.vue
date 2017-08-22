@@ -6,30 +6,63 @@
         <img src="./assets/logo-changed.png" alt="Logo" id="logo" width="30" height="28">
       </a>
   
-      <div class="navbar-item has-dropdown" v-bind:class="{ 'is-active': navbarActive}">
-        <a class="navbar-link" @click="toggleNavbar">
-          Subject
-        </a>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <div class="navbar-item has-dropdown" v-bind:class="{ 'is-active': navbarActive}">
+            <a class="navbar-link" @click="toggleNavbar">
+              Subject
+            </a>
   
-        <div class="navbar-dropdown">
-          <div @click="falsifyNavbar">
-            <router-link 
-            :to="{ name: 'Feed', params: { slug: subject }}" 
-            class="navbar-item" v-for="subject in subjects" 
-            :key="subject">
-              {{ subject.toUpperCase() }}
+            <div class="navbar-dropdown">
+              <div @click="falsifyNavbar">
+                <router-link :to="{ name: 'Feed', params: { slug: subject }}" class="navbar-item" v-for="subject in subjects" :key="subject">
+                  {{ subject }}
+                </router-link>
+              </div>
+  
+              <hr class=" navbar-divider ">
+              <div class="navbar-item ">
+                Version 1.0
+              </div>
+            </div>
+          </div>
+  
+          <div class="navbar-item">
+            <router-link :to="{name: 'Contribute'}">
+              Contribute
             </router-link>
           </div>
   
-          <hr class=" navbar-divider ">
-          <div class="navbar-item ">
-            Version 0.5.1
+        </div>
+  
+        <div class="navbar-end">
+          <div class="navbar-item has-dropdown" v-bind:class="{ 'is-active': actionsActive}">
+            <a class="navbar-link" @click="toggleActions">
+              Account
+            </a>
+  
+            <div class="navbar-dropdown">
+  
+              <div @click="falsifyActions">
+                <router-link :to="{ name: 'Login'}" class="navbar-item">
+                  Login
+                </router-link>
+              </div>
+              <div @click="falsifyActions">
+                <router-link :to="{ name: 'Signup'}" class="navbar-item">
+                  Signup
+                </router-link>
+              </div>
+  
+            </div>
+  
           </div>
         </div>
       </div>
+  
     </nav>
   
-    <div class="actual-body " @click="falsifyNavbar ">
+    <div class="actual-body " @click="falsifyNavbar">
   
       <section class="hero is-danger ">
         <div class="hero-body ">
@@ -54,7 +87,7 @@
         <div class="content has-text-centered is-small ">
           <p>
             <strong>Project</strong> by
-            <p> Michael Lande Blau </p>
+            <p> Michael Lande Blau @Ironhack</p>
           </p>
         </div>
       </div>
@@ -66,6 +99,7 @@
 
 
 <script>
+import api from "@/api";
 import index from "@/router/index";
 const dateFormat = require('dateformat');
 
@@ -74,7 +108,8 @@ export default {
   data() {
     return {
       navbarActive: false,
-      subjects: ["css", "html"],
+      actionsActive: false,
+      subjects: []
     };
   },
   methods: {
@@ -83,7 +118,20 @@ export default {
     },
     falsifyNavbar() {
       this.navbarActive = false;
+    },
+    toggleActions() {
+      this.actionsActive = !this.actionsActive;
+    },
+    falsifyActions() {
+      this.actionsActive = false;
+    },
+    getSubjects() {
+      api.subjects.getAll().then(subjects => { this.subjects = subjects })
     }
+  },
+
+  created() {
+    this.getSubjects();
   },
   computed: {
     prettySubjectList() {

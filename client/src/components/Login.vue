@@ -1,6 +1,7 @@
 <template>
     <div class="login">
-        {{ $root.token }} {{ err }}
+        {{ err }} {{ $root.user }}
+    
         <div class="login-wrapper columns">
     
             <section class="hero">
@@ -56,16 +57,15 @@ export default {
     },
     methods: {
         login() {
-            console.log(this.username, this.password)
             api.auth.login
                 ({
                     username: this.username, password: this.password
-                })
-                .then(token => {
-                    this.$root.token = token
+                }, this)
+                .then(res => {
+                    this.err = null;
                 })
                 .catch(err => {
-                    this.err = err
+                    this.err = err;
                 })
         }
     }

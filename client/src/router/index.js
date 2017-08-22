@@ -4,14 +4,15 @@ import Feed from "@/components/Feed";
 import Login from "@/components/Login";
 import Signup from "@/components/Signup";
 import Welcome from "@/components/Welcome";
+import Contribute from "@/components/Contribute";
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: "/",
-      name: "Welcome",
-      component: Welcome
+      name: "Default",
+      redirect: "/subjects/all"
     },
 
     {
@@ -30,6 +31,11 @@ export default new Router({
       path: "/subjects/:slug",
       name: "Feed",
       component: Feed
+    },
+    {
+      path: "/contribute",
+      name: "Contribute",
+      component: Contribute
     }
   ]
 });

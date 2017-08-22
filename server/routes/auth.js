@@ -36,11 +36,11 @@ router.post("/login", (req, res) => {
       }
       if (user) {
         const payload = {
-          id: user.id
+          id: user._id
         };
-
+        const { username, _id } = user;
         const token = jwt.encode(payload, config.jwtSecret);
-        res.json({ token });
+        res.json({ token, id: _id, username });
       }
     });
   } else {

@@ -7,10 +7,28 @@ const auth = {
   signup: credentials =>
     server.post("/signup", credentials).then(res => res.data),
 
-  login: credentials =>
-    server.post("/login", credentials).then(res => res.data).catch(err => {
-      throw err.response.data;
-    })
+  login: (credentials, vm) =>
+    server
+      .post("/login", credentials)
+      .then(res => {
+        const { token, id, username } = res.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("id", id);
+        localStorage.setItem("username", username);
+        this.a.auth.loadUser(vm);
+        return res.data;
+      })
+      .catch(err => {
+        throw err.response.data;
+      }),
+
+  loadUser: vm => {
+    const { token, username, id } = localStorage;
+    if (token) {
+      axios.defaults.headers.common.Authorization = "Bearer " + token;
+      vm.$root.user = { token, id, username };
+    }
+  }
 };
 
 const users = {
@@ -38,4 +56,8 @@ const comments = {
   deleteOne: id => server.delete(`/comments/${id}`).then(res => res.data)
 };
 
-export default { auth, users, items, comments };
+const subjects = {
+  getAll: () => server.get("/subjects").then(res => res.data)
+};
+
+export default { auth, users, items, comments, subjects };
