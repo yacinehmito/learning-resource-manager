@@ -45,6 +45,7 @@
 </template>
 
 <script>
+// dummy
 import api from "@/api";
 export default {
     name: 'login',
