@@ -1,8 +1,8 @@
 import axios from "axios";
 const server = axios.create({
-  baseURL: "http://localhost:3000/api/"
+  baseURL:
+    process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3000/api"
 });
-
 const auth = {
   signup: credentials =>
     server.post("/signup", credentials).then(res => res.data),

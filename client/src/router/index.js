@@ -8,11 +8,12 @@ import Contribute from "@/components/Contribute";
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
       name: "Default",
-      redirect: "/subjects/all"
+      redirect: "subjects/all"
     },
 
     {
