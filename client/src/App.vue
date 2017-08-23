@@ -48,9 +48,16 @@
                   Login
                 </router-link>
               </div>
+  
               <div @click="falsifyActions">
                 <router-link :to="{ name: 'Signup'}" class="navbar-item">
                   Signup
+                </router-link>
+              </div>
+  
+              <div @click="falsifyActions">
+                <router-link :to="{ name: 'Logout'}" class="navbar-item">
+                  Logout
                 </router-link>
               </div>
   
@@ -80,6 +87,7 @@
       <section class="section ">
         <router-view></router-view>
       </section>
+  
     </div>
   
     <footer class="footer ">
@@ -102,6 +110,7 @@
 import api from "@/api";
 import index from "@/router/index";
 const dateFormat = require('dateformat');
+const normalizeUrl = require('normalize-url');
 
 export default {
   name: "app",
@@ -109,7 +118,8 @@ export default {
     return {
       navbarActive: false,
       actionsActive: false,
-      subjects: []
+      subjects: [],
+      authorized: false
     };
   },
   methods: {
@@ -127,11 +137,19 @@ export default {
     },
     getSubjects() {
       api.subjects.getAll().then(subjects => { this.subjects = subjects })
-    }
+    },
+    getCurrentUser() {
+      const { id, username, token } = window.localStorage
+      if (token != "null") {
+        this.$root.user = { id, username, token };
+        this.authorized = true;
+      }
+    },
   },
 
   created() {
     this.getSubjects();
+    this.getCurrentUser();
   },
   computed: {
     prettySubjectList() {
@@ -139,7 +157,11 @@ export default {
         subject.toUpperCase()
         //subject.charAt(0).toUpperCase() + subject.slice(1)
       )
-
+    }
+  },
+  watch: {
+    "$route"(to, from) {
+      this.getCurrentUser();
     }
   }
 };

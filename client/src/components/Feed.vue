@@ -1,8 +1,25 @@
 <template>
   <div class="feed">
   
+    <section class="section" v-if="$root.welcome">
+      <div class="container">
+        <p class="subtitle">
+          Welcome back
+          <span id="user">{{ $root.user.username }}</span> :)
+        </p>
+      </div>
+    </section>
+  
+    <section class="section" v-if="$root.justContributed">
+      <div class="container">
+        <p class="subtitle">
+          Thanks for contributing!
+        </p>
+      </div>
+    </section>
+  
     <div v-if="currentSubject === 'all' || currentSubject === null" class="container">
-      <item v-for="item in items" :key="item._id" :item="item">
+      <item v-for="item in sortedItems" :key="item._id" :item="item">
       </item>
     </div>
   
@@ -37,19 +54,22 @@ export default {
   },
   computed: {
     filteredItems() {
-      return this.items.filter(item => {
-        return item.subject === this.currentSubject;
-      })
+      return this.sortedItems.filter(
+        item =>
+          item.subject === this.currentSubject
+      )
     },
-    sortByVote() {
+    sortedItems() {
+      return this.items.slice(0).sort(
+        (first, second) =>
+          (second.upvotes.length - first.upvotes.length)
+      )
 
     }
   },
   created() {
     this.getItems();
     this.getSubject();
-
-
   },
   components: {
     item
@@ -58,6 +78,8 @@ export default {
   watch: {
     "$route"(to, from) {
       this.getSubject();
+      this.$root.welcome = false;
+      this.$root.justContributed = false;
     }
   }
 
@@ -66,5 +88,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+#user {
+  color: purple;
+}
 </style>

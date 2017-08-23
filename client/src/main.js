@@ -19,9 +19,17 @@ new Vue({
       id: null,
       username: "",
       token: null
-    }
+    },
+    justContributed: false,
+    welcome: true
   },
   methods: {
-    logout() {}
+    logout() {
+      window.localStorage.username = null;
+      window.localStorage.id = null;
+      window.localStorage.token = null;
+      this.user = { id: null, username: "", token: null };
+      this.$router.push("/");
+    }
   }
 });

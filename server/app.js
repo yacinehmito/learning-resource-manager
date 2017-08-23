@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 //mongoose.connect("mongodb://localhost/resource-app", { useMongoClient: true });
+const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -33,7 +34,7 @@ passport.initialize();
 const strategy = new Strategy(
   {
     secretOrKey: config.jwtSecret,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt")
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
   },
   (payload, done) => {
     User.findById(payload.id).then(user => {
@@ -55,12 +56,33 @@ const subjectsRoutes = require("./routes/subjects");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "PUT, POST, GET, DELETE, OPTIONS"
+  );
   res.setHeader("Access-Control-Allow-Headers", "content-type, Authorization");
   next();
 });
 
 app.use("/api", authRoutes);
+
+/*
+app.use(
+  "/api/items",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    next();
+  }
+);
+
+
+app.get(
+  "/secret",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => res.json("Secret")
+);
+*/
+
 app.use("/api/users", usersRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/items", itemsRoutes);

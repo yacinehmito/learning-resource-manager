@@ -70,7 +70,7 @@
     
         </div>
     
-        <div class="box" v-if="browsing">
+        <div class="box" v-if="browsing && item.comments.length">
             <button class="button is-small is-success" @click="browse">
                 <span class="icon is-small">
                     <i class="fa fa-check"></i>
@@ -78,7 +78,20 @@
             </button>
     
             <section class="section">
-                <comment v-for="comment in item.comments" :commentID="comment" :key=comment._id></comment>
+                <comment v-for="comment in item.comments" :commentID="comment" :key="comment._id" v-on:restart="restartBrowsing(this.commentID)"></comment>
+            </section>
+    
+        </div>
+    
+        <div class="box" v-if="browsing && !item.comments.length">
+            <button class="button is-small is-success" @click="browse">
+                <span class="icon is-small">
+                    <i class="fa fa-check"></i>
+                </span>
+            </button>
+    
+            <section class="section">
+                (no comments)
             </section>
     
         </div>
@@ -174,6 +187,10 @@ export default {
             if (this.item.upvotes.includes(window.localStorage.id)) {
                 this.hasVoted = true;
             }
+        },
+        restartBrowsing(comment) {
+            let list = this.item.comments;
+            list.splice(list.indexOf(comment), 1);
         }
 
 

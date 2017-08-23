@@ -71,6 +71,7 @@
 <script>
 import api from "@/api";
 import external from "@/external-api";
+const normalizeUrl = require('normalize-url');
 export default {
     name: 'contribute',
     data() {
@@ -89,7 +90,7 @@ export default {
         contribute() {
             api.items.postOne
                 ({
-                    url: this.url,
+                    url: normalizeUrl(this.url, { stripFragment: false }),
                     description: this.description,
                     subject: this.subject,
                     headline: this.headline,
@@ -97,6 +98,11 @@ export default {
                 })
                 .then(res => {
                     this.item = res;
+                    this.$root.justContributed = true;
+                    this.$root.welcome = false;
+                    this.$router.push("/");
+
+
                 })
                 .catch(err => {
                     this.err = err

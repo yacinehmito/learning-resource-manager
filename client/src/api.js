@@ -25,7 +25,7 @@ const auth = {
   loadUser: vm => {
     const { token, username, id } = localStorage;
     if (token) {
-      axios.defaults.headers.common.Authorization = "Bearer " + token;
+      axios.defaults.headers.common.Authorization = "bearer " + token;
       vm.$root.user = { token, id, username };
     }
   }

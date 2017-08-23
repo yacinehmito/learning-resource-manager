@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Feed from "@/components/Feed";
 import Login from "@/components/Login";
+import Logout from "@/components/Logout";
 import Signup from "@/components/Signup";
 import Welcome from "@/components/Welcome";
 import Contribute from "@/components/Contribute";
@@ -12,7 +13,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Default",
+      name: "Home",
       redirect: "subjects/all"
     },
 
@@ -27,7 +28,11 @@ export default new Router({
       name: "Login",
       component: Login
     },
-
+    {
+      path: "/logout",
+      name: "Logout",
+      component: Logout
+    },
     {
       path: "/subjects/:slug",
       name: "Feed",

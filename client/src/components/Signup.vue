@@ -1,6 +1,6 @@
 <template>
     <div class="signup">
-        {{ msg }} {{ err }}
+        {{ err }}
         <div class="login-wrapper columns">
     
             <section class="hero">
@@ -66,8 +66,8 @@ export default {
                     username: this.username, password: this.password, email: this.email
                 })
                 .then(msg => {
-                    this.msg = msg;
-                    //this.$root.token = token
+                    api.auth.login({ username: this.username, password: this.password }, this)
+                        .then(this.$router.push("/"))
                 })
                 .catch(err => {
                     this.err = err;

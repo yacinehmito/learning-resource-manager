@@ -69,11 +69,13 @@ router.put("/:id", (req, res, next) => {
     });
 });
 
+/*
 router.delete("/:id", (req, res, next) => {
   Item.remove({ _id: req.params.id }).then(msg => res.json(msg)).catch(err => {
     next(err);
   });
 });
+*/
 
 router.delete("/:id", (req, res, next) => {
   let itemId = req.params.id;

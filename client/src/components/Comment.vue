@@ -15,7 +15,24 @@
                         <small> {{ parsedTimestamp }} </small>
                         <br>
                         <div class="box">
-                            <p> {{ comment.text }}
+                            <nav v-if="isOfCurrentUser" class="level is-mobile">
+                                <div class="level-left">
+                                    <a class="level-item" @click="deleteComment">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="level-left">
+                                    <a class="level-item">
+                                        <span class="icon is-small">
+                                            <i class="fa fa-pencil"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </nav>
+                            <p>
+                                {{ comment.text }}
                             </p>
                         </div>
                     </p>
@@ -37,7 +54,8 @@ export default {
     data() {
         return {
             comment: {},
-            authorName: ""
+            authorName: "",
+            isOfCurrentUser: false
         }
     },
 
@@ -47,7 +65,16 @@ export default {
                 this.comment = comment
                 api.users.getOne(comment.author).then(user => {
                     this.authorName = user.username;
+                    if (user._id === this.$root.user.id) {
+                        this.isOfCurrentUser = true;
+                    }
                 })
+
+            })
+        },
+        deleteComment() {
+            api.comments.deleteOne(this.commentID).then(res => {
+                this.$emit("restart", this.commentID)
             })
         }
     },
