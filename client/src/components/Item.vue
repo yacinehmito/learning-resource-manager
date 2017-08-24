@@ -4,17 +4,30 @@
         <div :class="{'is-active': prompt.isActive}" class="modal prompt">
             <div class="modal-background" @click="togglePrompt"></div>
             <div class="modal-content">
-                {{ prompt.text }}
     
-                <div class="notification is-primary">
-                    {{ prompt.text }}
-                    <button class="button is-small">
-                        <span class="icon">
-                            <i class="fa fa-check" @click="deleteItem">
-                            </i>
-                        </span>
-                    </button>
-                </div>
+                <article class="message is-danger">
+                    <div class="message-body has-text-centered">
+                        {{ prompt.text }}
+    
+                        <br>
+                        <br>
+                        <button class="button is-small">
+                            <span class="icon">
+                                <i class="fa fa-times" @click="togglePrompt">
+                                </i>
+                            </span>
+                        </button>
+                        &emsp;
+                        <button class="button is-small">
+                            <span class="icon">
+                                <i class="fa fa-check" @click="deleteItem">
+                                </i>
+                            </span>
+                        </button>
+    
+                    </div>
+                </article>
+    
             </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -88,9 +101,14 @@
         <div v-else class="columns">
             <div class="column">
                 <div class="section deleted">
-                    <div class="notification is-primary is-small">
-                        {{ deleted }}
-                    </div>
+                    <article class="message is-danger">
+                        <div class="message-body has-text-centered">
+    
+                            {{ deleted }}
+    
+                        </div>
+                    </article>
+    
                 </div>
             </div>
             <div class="column">

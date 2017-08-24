@@ -2,7 +2,7 @@
   <div id="app">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <nav class="navbar">
-      <a class="navbar-item" id="logo-container">
+      <a @click="$router.push('/')" class="navbar-item" id="logo-container">
         <img src="./assets/logo-changed.png" alt="Logo" id="logo" width="30" height="28">
       </a>
   
@@ -71,14 +71,15 @@
   
     <div class="actual-body " @click="falsifyNavbar">
   
-      <section class="hero is-danger ">
-        <div class="hero-body ">
+      <section class="hero is-small is-info is-bold">
+        <div class="hero-body has-text-centered">
           <div class="container ">
             <h1 class="title ">
-              IronSomething
+              IronSource
             </h1>
+  
             <h2 class="subtitle ">
-              Where you go for that "Ah ha! " moment
+              A Friendly External Resource Platform
             </h2>
           </div>
         </div>
