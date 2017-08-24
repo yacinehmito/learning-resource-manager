@@ -1,11 +1,15 @@
 <template>
     <div class="login">
-        {{ $root.user.token }} {{ $root.user.username }} {{ err }}
-        <br> url: {{ url }}
-        <br> description: {{ description }}
-        <br> subject: {{ subject }}
-        <br> headline: {{ headline }}
-        <br> contributor: {{ contributor }}
+        {{ $root.user.username }}
+    
+        <article class="message is-danger" v-if="err">
+            <div class="message-body has-text-centered">
+    
+                {{ err }}
+    
+            </div>
+        </article>
+    
         <div class="login-wrapper columns">
     
             <section class="hero">
@@ -105,7 +109,7 @@ export default {
 
                 })
                 .catch(err => {
-                    this.err = err
+                    this.err = "Error posting item"
                 })
         },
         getSubjects() {

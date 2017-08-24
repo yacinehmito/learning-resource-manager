@@ -1,14 +1,13 @@
 <template>
   <div class="feed">
   
-    <section class="section">
+    <section class="section" v-if="$root.welcome || $root.justContributed">
       <div class="container" v-if="$root.welcome">
         <article class="message is-primary">
           <div class="message-body has-text-centered">
-  
             Welcome back,
-            <span id="user">{{ $root.user.username }}</span> :)
-  
+            <span id="user">{{ $root.user.username }}</span>
+            :)
           </div>
         </article>
       </div>
@@ -38,35 +37,36 @@
     </section>
   
     <!-- <div v-if="currentSubject === 'all' || currentSubject === null" class="container">
-                                                        <div class="columns">
-                                                          <div class="column">
-                                                            <item v-for="item in slicedItems_1" :itemID="item._id" :key="item._id" :item="item">
-                                                            </item>
-                                                          </div>
-                                                          <div class="column">
-                                                            <item v-for="item in slicedItems_2" :itemID="item._id" :key="item._id" :item="item">
-                                                            </item>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      
-                                                      <div v-else class="container">
-                                                        <div class="columns">
-                                                          <div class="column">
-                                                            <item v-for="item in slicedFilteredItems_1" :itemID="item._id" :key="item._id" :item="item">
-                                                            </item>
-                                                          </div>
-                                                          <div class="column">
-                                                            <item v-for="item in slicedFilteredItems_2" :itemID="item._id" :key="item._id" :item="item">
-                                                            </item>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                      -->
+                                                              <div class="columns">
+                                                                <div class="column">
+                                                                  <item v-for="item in slicedItems_1" :itemID="item._id" :key="item._id" :item="item">
+                                                                  </item>
+                                                                </div>
+                                                                <div class="column">
+                                                                  <item v-for="item in slicedItems_2" :itemID="item._id" :key="item._id" :item="item">
+                                                                  </item>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                            
+                                                            <div v-else class="container">
+                                                              <div class="columns">
+                                                                <div class="column">
+                                                                  <item v-for="item in slicedFilteredItems_1" :itemID="item._id" :key="item._id" :item="item">
+                                                                  </item>
+                                                                </div>
+                                                                <div class="column">
+                                                                  <item v-for="item in slicedFilteredItems_2" :itemID="item._id" :key="item._id" :item="item">
+                                                                  </item>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                            -->
   </div>
 </template>
 
 <script>
+//dummy
 import api from "@/api";
 import item from "./Item";
 export default {

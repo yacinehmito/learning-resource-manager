@@ -50,7 +50,10 @@ const items = {
 const comments = {
   getAll: () => server.get("/comments").then(res => res.data),
   getOne: id => server.get(`/comments/${id}`).then(res => res.data),
-  postOne: info => server.post("/comments", info).then(res => res.data),
+  postOne: info =>
+    server.post("/comments", info).then(res => res.data).catch(err => {
+      throw err;
+    }),
   editOne: (id, changes) =>
     server.put(`/comments/${id}`, changes).then(res => res.data),
   deleteOne: id => server.delete(`/comments/${id}`).then(res => res.data)

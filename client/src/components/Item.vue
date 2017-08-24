@@ -115,6 +115,14 @@
             </div>
         </div>
     
+        <article class="message is-danger" v-if="err">
+            <div class="message-body has-text-centered">
+    
+                {{ err }}
+    
+            </div>
+        </article>
+    
         <div class="box" v-if="browsing && item.comments.length">
             <button class="button is-small is-danger" @click="browse">
                 <span class="icon is-small">
@@ -194,7 +202,8 @@ export default {
                 isActive: false,
                 text: "Remove this item?"
             },
-            removed: false
+            removed: false,
+            err: false
         }
     },
     props: [
@@ -229,7 +238,9 @@ export default {
                 this.hasVoted = true;
                 this.item.upvotes.push(window.localStorage.id);
                 api.items.editOne(this.item._id, { upvotes: this.item.upvotes })
-                    .catch(err => { alert("problem") })
+                    .catch(err => {
+                        this.err = "Couldn't vote. Please login first"
+                    })
             }
 
         },
@@ -255,6 +266,8 @@ export default {
                 this.currentComment.id = comment._id;
                 this._updateItem();
 
+            }).catch(err => {
+                this.err = "Error posting comment. Please login first";
             });
         },
 
