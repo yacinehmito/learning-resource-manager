@@ -1,6 +1,5 @@
 <template>
     <div class="login">
-        {{ $root.user.username }}
     
         <article class="message is-danger" v-if="err">
             <div class="message-body has-text-centered">
@@ -42,7 +41,7 @@
                             <p class="control has-icon has-icon-right">
                                 <div class="select">
                                     <select v-model="subject">
-                                        <option :key="subject" v-for="subject in subjects">
+                                        <option :key="subject" v-for="subject in subjects.slice(1)">
                                             {{ subject }}
                                         </option>
                                     </select>

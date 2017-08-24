@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
   
-    <section class="section" v-if="$root.welcome || $root.justContributed">
+    <section class="section" v-if="($root.welcome || $root.justContributed) && $root.user.token">
       <div class="container" v-if="$root.welcome">
         <article class="message is-primary">
           <div class="message-body has-text-centered">
@@ -25,10 +25,10 @@
     </section>
   
     <section class="section">
-      <div v-if="currentSubject === 'all' || currentSubject === null" class="container">
+      <transition-group tag="div" name="flip" v-if="currentSubject === 'all' || currentSubject === null" class="container">
         <item v-for="item in sortedItems" :itemID="item._id" :key="item._id" :item="item">
         </item>
-      </div>
+      </transition-group>
   
       <div v-else class="container">
         <item v-for="item in filteredItems" :itemID="item._id" :key="item._id" :item="item">
@@ -36,32 +36,6 @@
       </div>
     </section>
   
-    <!-- <div v-if="currentSubject === 'all' || currentSubject === null" class="container">
-                                                              <div class="columns">
-                                                                <div class="column">
-                                                                  <item v-for="item in slicedItems_1" :itemID="item._id" :key="item._id" :item="item">
-                                                                  </item>
-                                                                </div>
-                                                                <div class="column">
-                                                                  <item v-for="item in slicedItems_2" :itemID="item._id" :key="item._id" :item="item">
-                                                                  </item>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                            
-                                                            <div v-else class="container">
-                                                              <div class="columns">
-                                                                <div class="column">
-                                                                  <item v-for="item in slicedFilteredItems_1" :itemID="item._id" :key="item._id" :item="item">
-                                                                  </item>
-                                                                </div>
-                                                                <div class="column">
-                                                                  <item v-for="item in slicedFilteredItems_2" :itemID="item._id" :key="item._id" :item="item">
-                                                                  </item>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                            -->
   </div>
 </template>
 
@@ -162,5 +136,9 @@ export default {
 <style scoped>
 #user {
   color: blueviolet;
+}
+
+.flip-list-move {
+  transition: transform .350s;
 }
 </style>

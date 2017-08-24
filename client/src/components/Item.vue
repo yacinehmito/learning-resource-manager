@@ -39,7 +39,7 @@
                         <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
                     </figure>
                 </div>
-                <div class="media-content">
+                <div class="media-content ">
                     <div class="content">
                         <p>
     
@@ -80,7 +80,7 @@
                             <a class="level-item">
                                 <span class="icon" v-bind:class="{'used': hasVoted}">
                                     <i class="fa fa-thumbs-up" @click="upvote">
-                                        {{ item.upvotes.length }}
+                                        <span class="vote-count"> {{ item.upvotes.length }} </span>
                                     </i>
                                 </span>
                             </a>
@@ -363,3 +363,4 @@ voted {
     background-color: red;
 }
 </style>
+

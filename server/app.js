@@ -64,6 +64,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api", (req, res, next) => {
+  const authenticate = passport.authenticate(
+    "jwt",
+    config.jwtSession,
+    (err, user, fail) => {
+      req.user = user;
+      next(err);
+    }
+  );
+  authenticate(req, res, next);
+});
+
 app.use("/api", authRoutes);
 
 /*

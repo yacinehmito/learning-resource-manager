@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        {{ err }} {{ $root.user }}
+        {{ err }}
     
         <div class="login-wrapper columns">
     

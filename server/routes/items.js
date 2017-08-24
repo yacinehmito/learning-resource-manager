@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Item = require("../models/item");
 const Comment = require("../models/comment");
+const { ensureLoggedIn } = require("../middlewares");
 
 router.get("/", (req, res, next) => {
   Item.find()
@@ -14,7 +15,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", ensureLoggedIn, (req, res, next) => {
   const {
     url,
     headline,

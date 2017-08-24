@@ -6,7 +6,7 @@
         <img src="./assets/logo-changed.png" alt="Logo" id="logo" width="30" height="28">
       </a>
   
-      <div class="navbar-menu">
+      <div class="navbar-menu is-active">
         <div class="navbar-start">
           <div class="navbar-item has-dropdown" v-bind:class="{ 'is-active': navbarActive}">
             <a class="navbar-link" @click="toggleNavbar">
@@ -38,24 +38,25 @@
         <div class="navbar-end">
           <div class="navbar-item has-dropdown" v-bind:class="{ 'is-active': actionsActive}">
             <a class="navbar-link" @click="toggleActions">
-              Account
+              <span v-if="$root.user.token"> {{ $root.user.username }} </span>
+              <span v-else> Account </span>
             </a>
   
             <div class="navbar-dropdown">
   
-              <div @click="falsifyActions">
+              <div @click="falsifyActions" v-if="!$root.user.token">
                 <router-link :to="{ name: 'Login'}" class="navbar-item">
                   Login
                 </router-link>
               </div>
   
-              <div @click="falsifyActions">
+              <div @click="falsifyActions" v-if="!$root.user.token">
                 <router-link :to="{ name: 'Signup'}" class="navbar-item">
                   Signup
                 </router-link>
               </div>
   
-              <div @click="falsifyActions">
+              <div @click="falsifyActions" v-if="$root.user.token">
                 <router-link :to="{ name: 'Logout'}" class="navbar-item">
                   Logout
                 </router-link>
@@ -75,7 +76,7 @@
         <div class="hero-body has-text-centered">
           <div class="container ">
             <h1 class="title ">
-              IronSource
+              ReSourcer
             </h1>
   
             <h2 class="subtitle ">
