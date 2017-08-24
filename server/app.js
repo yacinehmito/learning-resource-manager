@@ -9,7 +9,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 //mongoose.connect("mongodb://localhost/resource-app", { useMongoClient: true });
-const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
+const { ensureLoggedIn, pass } = require("./middlewares");
+const strict = false;
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -76,28 +77,12 @@ app.use("/api", (req, res, next) => {
   authenticate(req, res, next);
 });
 
+const getMiddleware = () => (strict ? ensureLoggedIn : pass);
+
 app.use("/api", authRoutes);
-
-/*
-app.use(
-  "/api/items",
-  passport.authenticate("jwt", config.jwtSession),
-  (req, res, next) => {
-    next();
-  }
-);
-
-
-app.get(
-  "/secret",
-  passport.authenticate("jwt", config.jwtSession),
-  (req, res, next) => res.json("Secret")
-);
-*/
-
 app.use("/api/users", usersRoutes);
-app.use("/api/comments", commentsRoutes);
-app.use("/api/items", itemsRoutes);
+app.use("/api/comments", getMiddleware(), commentsRoutes);
+app.use("/api/items", getMiddleware(), itemsRoutes);
 app.use("/api/subjects", subjectsRoutes);
 
 const clientRoot = path.join(__dirname, "../client/dist");

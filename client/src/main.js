@@ -29,7 +29,12 @@ new Vue({
       window.localStorage.id = null;
       window.localStorage.token = null;
       this.user = { id: null, username: "", token: null };
-      this.$router.push("/");
+      this.$router.push({ name: "Login" });
+    },
+    redirect() {
+      if (!this.user.token) {
+        this.$router.push({ name: "Login" });
+      }
     }
   }
 });

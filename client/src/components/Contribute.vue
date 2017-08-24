@@ -122,6 +122,7 @@ export default {
         }
     },
     created() {
+        this.$root.redirect();
         this.getSubjects();
         this.getContributor();
 

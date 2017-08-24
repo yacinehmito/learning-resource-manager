@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
   
-    <section class="section" v-if="($root.welcome || $root.justContributed) && $root.user.token">
+    <div class="message-area" v-if="($root.welcome || $root.justContributed) && $root.user.token">
       <div class="container" v-if="$root.welcome">
         <article class="message is-primary">
           <div class="message-body has-text-centered">
@@ -22,25 +22,31 @@
           </div>
         </article>
       </div>
-    </section>
+      <br>
+    </div>
   
-    <section class="section">
+    <div class="box" v-if="!filteredItems.length && currentSubject != 'all'">
+      <section class="section">
+        <small> (No resources yet. Be the first to contribute!) </small>
+      </section>
+    </div>
+  
+    <div class="container">
       <transition-group tag="div" name="flip" v-if="currentSubject === 'all' || currentSubject === null" class="container">
-        <item v-for="item in sortedItems" :itemID="item._id" :key="item._id" :item="item">
+        <item v-for="item in sortedItems" :itemID="item._id" :key="item._id" :item="item" :proportion="proportion">
         </item>
       </transition-group>
   
       <div v-else class="container">
-        <item v-for="item in filteredItems" :itemID="item._id" :key="item._id" :item="item">
+        <item v-for="item in filteredItems" :itemID="item._id" :key="item._id" :item="item" :proportion="proportion">
         </item>
       </div>
-    </section>
+    </div>
   
   </div>
 </template>
 
 <script>
-//dummy
 import api from "@/api";
 import item from "./Item";
 export default {
@@ -48,17 +54,28 @@ export default {
   data() {
     return {
       items: [],
-      currentSubject: null
+      currentSubject: null,
+      proportion: 10
     }
   },
   methods: {
     getItems() {
       api.items.getAll().then(items => {
-        this.items = items
+        this.items = items;
+        this.setProportion();
       })
     },
     getSubject() {
       this.currentSubject = this.$route.params.slug;
+    },
+    setProportion() {
+      let max = 0;
+      for (let item of this.items) {
+        if (item.upvotes.length > max) {
+          max = item.upvotes.length;
+        }
+      }
+      this.proportion = max;
     }
   },
   computed: {
@@ -115,6 +132,7 @@ export default {
     }
   },
   created() {
+    this.$root.redirect();
     this.getItems();
     this.getSubject();
   },

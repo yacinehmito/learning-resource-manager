@@ -86,7 +86,7 @@
         </div>
       </section>
   
-      <section class="section ">
+      <section class="section">
         <router-view></router-view>
       </section>
   
@@ -145,6 +145,8 @@ export default {
       if (token != "null") {
         this.$root.user = { id, username, token };
         this.authorized = true;
+        api.auth.loadUser(this);
+
       }
     },
   },

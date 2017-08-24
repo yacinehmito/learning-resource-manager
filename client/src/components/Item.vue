@@ -1,180 +1,218 @@
 <template>
     <div class="item">
+        <div class="columns">
+            <div class="column is-two-thirds">
     
-        <div :class="{'is-active': prompt.isActive}" class="modal prompt">
-            <div class="modal-background" @click="togglePrompt"></div>
-            <div class="modal-content">
+                <div :class="{'is-active': prompt.isActive}" class="modal prompt">
+                    <div class="modal-background" @click="togglePrompt"></div>
+                    <div class="modal-content">
     
-                <article class="message is-danger">
+                        <article class="message is-danger">
+                            <div class="message-body has-text-centered">
+                                {{ prompt.text }}
+    
+                                <br>
+                                <br>
+                                <button class="button is-small">
+                                    <span class="icon">
+                                        <i class="fa fa-times" @click="togglePrompt">
+                                        </i>
+                                    </span>
+                                </button>
+                                &emsp;
+                                <button class="button is-small">
+                                    <span class="icon">
+                                        <i class="fa fa-check" @click="deleteItem">
+                                        </i>
+                                    </span>
+                                </button>
+    
+                            </div>
+                        </article>
+    
+                    </div>
+                    <button class="modal-close is-large" aria-label="close"></button>
+                </div>
+    
+                <div class="box item-box" v-if="!removed">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                            </figure>
+    
+                        </div>
+    
+                        <div class="media-content ">
+                            <div class="content">
+                                <p>
+    
+                                    <strong>
+                                        <a :href="item.url"> {{ item.headline }} </a>
+                                    </strong>
+                                    &nbsp;&nbsp;
+    
+                                    <small> @{{ username }} </small>
+    
+                                    <br>
+                                    <small> {{ parsedTimestamp }} </small>
+                                    <br>
+                                    <a class="link-option" @click="toggleURL"> {{ word }} Full URL </a>
+                                    <a :href="item.url" v-if="showFullLink">
+                                        <br>{{ item.url }} </a>
+                                    <br>
+                                    <br> {{ item.description }}
+                                </p>
+                            </div>
+                            <br>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                    <a class="level-item">
+                                        <span class="icon">
+                                            <i class="fa fa-comment" @click="startComment" :class="{'used': commenting}">
+                                                &nbsp;
+                                            </i>
+                                        </span>
+                                    </a>
+                                    <a class="level-item">
+                                        <span class="icon">
+                                            <i class="fa fa-eye" @click="browse" :class="{'used': browsing || !item.comments.length}">
+                                                {{ item.comments.length }}
+                                            </i>
+                                        </span>
+                                    </a>
+                                    <a class="level-item">
+                                        <span class="icon" v-bind:class="{'used': hasVoted}">
+                                            <i class="fa fa-thumbs-up" @click="upvote">
+                                                <span class="vote-count"> {{ item.upvotes.length }} </span>
+                                            </i>
+                                        </span>
+                                    </a>
+    
+                                </div>
+                                <div class="level-right">
+                                    <a class="level-item" @click="togglePrompt" v-if="isOfCurrentUser">
+                                        <span class="icon">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </nav>
+                        </div>
+                    </article>
+                </div>
+    
+                <div v-else class="columns">
+                    <div class="column">
+                        <div class="section deleted">
+                            <article class="message is-danger">
+                                <div class="message-body has-text-centered">
+    
+                                    {{ deleted }}
+    
+                                </div>
+                            </article>
+    
+                        </div>
+                    </div>
+                    <div class="column">
+                    </div>
+                </div>
+    
+                <article class="message is-danger" v-if="err">
                     <div class="message-body has-text-centered">
-                        {{ prompt.text }}
     
-                        <br>
-                        <br>
-                        <button class="button is-small">
-                            <span class="icon">
-                                <i class="fa fa-times" @click="togglePrompt">
-                                </i>
-                            </span>
-                        </button>
-                        &emsp;
-                        <button class="button is-small">
-                            <span class="icon">
-                                <i class="fa fa-check" @click="deleteItem">
-                                </i>
-                            </span>
-                        </button>
+                        {{ err }}
     
                     </div>
                 </article>
     
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
+                <div class="box" v-if="browsing && item.comments.length">
+                    <button class="button is-small is-danger" @click="browse">
+                        <span class="icon is-small">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
     
-        <div class="box item-box" v-if="!removed">
-            <article class="media">
-                <div class="media-left">
-                    <figure class="image is-64x64">
-                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                    </figure>
+                    <section class="section">
+                        <comment v-for="(comment, i) in comments" :commentID="comment" :key="comment._id" v-on:restart="restartBrowsing(i)"></comment>
+                    </section>
+    
                 </div>
-                <div class="media-content ">
-                    <div class="content">
-                        <p>
     
-                            <strong>
-                                <a :href="item.url"> {{ item.headline }} </a>
-                            </strong>
-                            &nbsp;&nbsp;
+                <div class="box" v-if="browsing && !item.comments.length">
+                    <button class="button is-small is-danger" @click="browse">
+                        <span class="icon is-small">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
     
-                            <small> @{{ username }} </small>
+                    <section class="section">
+                        <small>(no comments)</small>
+                    </section>
     
-                            <br>
-                            <small> {{ parsedTimestamp }} </small>
-                            <br>
-                            <a class="link-option" @click="toggleURL"> {{ word }} Full URL </a>
-                            <a :href="item.url" v-if="showFullLink">
-                                <br>{{ item.url }} </a>
-                            <br>
-                            <br> {{ item.description }}
-                        </p>
-                    </div>
+                </div>
+    
+                <div class="box" v-if="commenting">
+    
+                    <button class="button is-small is-success" @click="postComment">
+                        <span class="icon is-small">
+                            <i class="fa fa-check"></i>
+                        </span>
+                    </button>
+                    &nbsp;
+    
+                    <button class="button is-small is-danger" @click="cancelComment">
+                        <span class="icon is-small">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+    
                     <br>
-                    <nav class="level is-mobile">
-                        <div class="level-left">
-                            <a class="level-item">
-                                <span class="icon">
-                                    <i class="fa fa-comment" @click="startComment" :class="{'used': commenting}">
-                                        &nbsp;
-                                    </i>
-                                </span>
-                            </a>
-                            <a class="level-item">
-                                <span class="icon">
-                                    <i class="fa fa-eye" @click="browse" :class="{'used': browsing || !item.comments.length}">
-                                        {{ item.comments.length }}
-                                    </i>
-                                </span>
-                            </a>
-                            <a class="level-item">
-                                <span class="icon" v-bind:class="{'used': hasVoted}">
-                                    <i class="fa fa-thumbs-up" @click="upvote">
-                                        <span class="vote-count"> {{ item.upvotes.length }} </span>
-                                    </i>
-                                </span>
-                            </a>
+                    <br>
     
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea is-primary is-medium" type="text" :placeholder="commentDefault" v-model="currentComment.text"></textarea>
                         </div>
-                        <div class="level-right">
-                            <a class="level-item" @click="togglePrompt" v-if="isOfCurrentUser">
-                                <span class="icon">
-                                    <i class="fa fa-trash"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </nav>
+                    </div>
+    
                 </div>
-            </article>
-        </div>
+                <br>
     
-        <div v-else class="columns">
+            </div>
             <div class="column">
-                <div class="section deleted">
-                    <article class="message is-danger">
-                        <div class="message-body has-text-centered">
     
-                            {{ deleted }}
+                <div v-if="!removed">
+                    <article class="media">
     
+                        <div class="media-content  has-text-centered">
+                            <small>
+                                {{ item.subject }}
+                            </small>
+                            <br>
+                            <br>
+    
+                            <div class="columns">
+                                <div class="column"></div>
+                                <div class="column">
+                                    <figure class="image is-64x64">
+                                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="column"></div>
+                            </div>
+                            <br>
+                            <small>Popularity</small>
+                            <br>
+    
+                            <progress class="progress is-primary" :value="item.upvotes.length" :max="proportion*1.05">30%</progress>
                         </div>
                     </article>
-    
                 </div>
-            </div>
-            <div class="column">
-            </div>
-        </div>
-    
-        <article class="message is-danger" v-if="err">
-            <div class="message-body has-text-centered">
-    
-                {{ err }}
     
             </div>
-        </article>
-    
-        <div class="box" v-if="browsing && item.comments.length">
-            <button class="button is-small is-danger" @click="browse">
-                <span class="icon is-small">
-                    <i class="fa fa-times"></i>
-                </span>
-            </button>
-    
-            <section class="section">
-                <comment v-for="comment in item.comments" :commentID="comment" :key="comment._id" v-on:restart="restartBrowsing(this.commentID)"></comment>
-            </section>
-    
         </div>
-    
-        <div class="box" v-if="browsing && !item.comments.length">
-            <button class="button is-small is-danger" @click="browse">
-                <span class="icon is-small">
-                    <i class="fa fa-times"></i>
-                </span>
-            </button>
-    
-            <section class="section">
-                (no comments)
-            </section>
-    
-        </div>
-    
-        <div class="box" v-if="commenting">
-    
-            <button class="button is-small is-success" @click="postComment">
-                <span class="icon is-small">
-                    <i class="fa fa-check"></i>
-                </span>
-            </button>
-            &nbsp;
-    
-            <button class="button is-small is-danger" @click="cancelComment">
-                <span class="icon is-small">
-                    <i class="fa fa-times"></i>
-                </span>
-            </button>
-    
-            <br>
-            <br>
-    
-            <div class="field">
-                <div class="control">
-                    <textarea class="textarea is-primary is-medium" type="text" :placeholder="commentDefault" v-model="currentComment.text"></textarea>
-                </div>
-            </div>
-    
-        </div>
-        <br>
     </div>
 </template>
 
@@ -186,12 +224,14 @@ export default {
     name: 'item',
     data() {
         return {
+
             isOfCurrentUser: false,
             username: null,
             currentComment: {
                 text: "",
                 id: null
             },
+            comments: [],
             commenting: false,
             browsing: false,
             placeholder: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
@@ -207,7 +247,8 @@ export default {
         }
     },
     props: [
-        "item"
+        "item",
+        "proportion"
     ],
     methods: {
 
@@ -292,9 +333,8 @@ export default {
                 this.hasVoted = true;
             }
         },
-        restartBrowsing(comment) {
-            let list = this.item.comments;
-            list.splice(list.indexOf(comment), 1);
+        restartBrowsing(index) {
+            this.comments.splice(index, 1);
         },
         toggleURL() {
             this.showFullLink = !this.showFullLink;
@@ -330,7 +370,7 @@ export default {
     created() {
         this._getUsername();
         this.checkIfVoted();
-
+        this.comments = this.item.comments;
     }
 }
 </script>
