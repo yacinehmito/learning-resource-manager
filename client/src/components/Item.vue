@@ -1,6 +1,6 @@
 <template>
     <div class="item">
-        <div class="columns">
+        <div class="columns is-mobile">
             <div class="column is-two-thirds">
     
                 <div :class="{'is-active': prompt.isActive}" class="modal prompt">
@@ -38,7 +38,7 @@
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
+                                <img :src="getPicLink(item.subject)" :alt="item.subject">
                             </figure>
     
                         </div>
@@ -48,7 +48,7 @@
                                 <p>
     
                                     <strong>
-                                        <a :href="item.url"> {{ item.headline }} </a>
+                                        <a target="blank" :href="item.url"> {{ item.headline }} </a>
                                     </strong>
                                     &nbsp;&nbsp;
     
@@ -58,7 +58,7 @@
                                     <small> {{ parsedTimestamp }} </small>
                                     <br>
                                     <a class="link-option" @click="toggleURL"> {{ word }} Full URL </a>
-                                    <a :href="item.url" v-if="showFullLink">
+                                    <a target="blank" :href="item.url" v-if="showFullLink">
                                         <br>{{ item.url }} </a>
                                     <br>
                                     <br> {{ item.description }}
@@ -186,27 +186,11 @@
                 <div v-if="!removed">
                     <article class="media">
     
-                        <div class="media-content  has-text-centered">
-                            <small>
-                                {{ item.subject }}
-                            </small>
+                        <div class="media-content">
                             <br>
                             <br>
     
-                            <div class="columns">
-                                <div class="column"></div>
-                                <div class="column">
-                                    <figure class="image is-64x64">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                                    </figure>
-                                </div>
-                                <div class="column"></div>
-                            </div>
-                            <br>
-                            <small>Popularity</small>
-                            <br>
-    
-                            <progress class="progress is-primary" :value="item.upvotes.length" :max="proportion*1.05">30%</progress>
+                            <progress class="progress is-primary is-medium" :value="item.upvotes.length" :max="proportion*1.05"></progress>
                         </div>
                     </article>
                 </div>
@@ -265,6 +249,9 @@ export default {
                     this.isOfCurrentUser = true;
                 }
             })
+        },
+        getPicLink(subjectName) {
+            return require('../assets/' + subjectName.toLowerCase() + '.png');
         },
 
         _updateItem() {

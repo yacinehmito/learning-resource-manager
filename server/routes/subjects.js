@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const subjects = [
   "all",
-  "css",
-  "html",
-  "javascript (vanilla)",
-  "nodeJS",
-  "mongoDB / mongoose",
-  "express",
-  "vueJS"
+  "CSS",
+  "HTML",
+  "JavaScript",
+  "NodeJS",
+  "MongoDB",
+  "ExpressJS",
+  "VueJS",
+  "General"
 ];
 
 router.get("/", (req, res, next) => {

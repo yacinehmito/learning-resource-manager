@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <nav class="navbar">
       <a @click="$router.push('/')" class="navbar-item" id="logo-container">
-        <img src="./assets/logo-changed.png" alt="Logo" id="logo" width="30" height="28">
+        <img src="./assets/logo.png" alt="Logo" id="logo" width="30" height="35">
       </a>
   
       <div class="navbar-menu is-active">
