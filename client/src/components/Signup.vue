@@ -1,6 +1,15 @@
 <template>
     <div class="signup">
-        {{ err }}
+        <div class="message-area" v-if="err">
+            <div class="container">
+                <article class="message is-primary">
+                    <div class="message-body has-text-centered">
+                        Error signing up. Try another username
+    
+                    </div>
+                </article>
+            </div>
+        </div>
         <div class="login-wrapper columns">
     
             <section class="hero">

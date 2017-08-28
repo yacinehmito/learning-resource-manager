@@ -25,7 +25,7 @@ Or, he goes over a subject recently learned in class, and answers a question in 
 ## A Resource
 Resources are articles, videos or any other educational media, which helped someone in a similar context (i.e. a student or teacher) get that "Ah Ha" moments in that particular subject.
 
-The view of a resource features a headline, author, timestamp, upvotes, comments (collapsed), url and image?
+The view of a resource features a headline, author, timestamp, upvotes, comments (collapsed), url.
 
 Each resource can be upvoted and commented on, to allow feedback and "mass intelligence" sorting.
 
@@ -35,24 +35,20 @@ Resources are sorted in the feed by subject and upvotes within a subject.
 
 The feed is the current collection of resources, filtered by subject and sorted by upvotes.
 
-## Code Example
-
-
 
 ## Motivation
 
-This app is being developed as part of my student project in Ironhack's web-dev bootcamp in Paris.
-
-## Installation
+This app was developed as part of my student project in Ironhack's web-dev bootcamp in Paris.
 
 
-## API Reference
+## Customization
+
+To add subjects, simply edit /server/routes/subjects.js,
+then simply add an PNG image to serve as that subject's icon to /client/src/assets. 
+Image should have the same name as subject, but in lowercase. 
+
+For example:
+Add a string "Angular2" to const subjects array (/server/routes/subjects.js, line 3).
+Add image named "angular2.png" to /client/src/assets.
 
 
-## Tests
-
-
-## Contributors
-
-
-## License

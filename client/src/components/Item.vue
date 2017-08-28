@@ -1,7 +1,7 @@
 <template>
     <div class="item">
         <div class="columns is-mobile">
-            <div class="column is-two-thirds">
+            <div class="column is-three-quarters">
     
                 <div :class="{'is-active': prompt.isActive}" class="modal prompt">
                     <div class="modal-background" @click="togglePrompt"></div>
@@ -190,7 +190,7 @@
                             <br>
                             <br>
     
-                            <progress class="progress is-primary is-medium" :value="item.upvotes.length" :max="proportion*1.05"></progress>
+                            <progress class="progress is-primary is-medium" :value="item.upvotes.length" :max="proportion"></progress>
                         </div>
                     </article>
                 </div>
