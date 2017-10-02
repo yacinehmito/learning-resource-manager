@@ -5,50 +5,48 @@
                 <article class="message is-primary">
                     <div class="message-body has-text-centered">
                         Wrong username or password. Try again
-    
+
                     </div>
                 </article>
             </div>
         </div>
-    
+
         <div class="login-wrapper columns">
-    
+
             <section class="hero">
-    
+
                 <div class="hero-body">
                     <div class="container">
-    
-                        <div class="login-form">
-                            <p class="control has-icon has-icon-right">
-                                <input class="input email-input" type="text" v-model="username" placeholder="your username">
+
+                        <form @submit.prevent class="login-form">
+                            <label class="control has-icon has-icon-right">
+                                <input class="input email-input" type="text" v-model="username" name="username" placeholder="your username">
                                 <span class="icon user">
                                     <i class="fa fa-user"></i>
                                 </span>
-                            </p>
-                            <br>
-                            <p class="control has-icon has-icon-right">
-                                <input class="input password-input" type="password" v-model="password" placeholder="your password">
+                            </label>
+
+                            <label class="control has-icon has-icon-right">
+                                <input class="input password-input" type="password" v-model="password" name="password" placeholder="your password">
                                 <span class="icon user">
                                     <i class="fa fa-lock"></i>
                                 </span>
-                            </p>
-                            <br>
-                            <p class="control login">
-                                <button class="button is-success is-outlined is-large" @click="login">Login</button>
-                            </p>
-    
+                            </label>
+
+                            <button class="control login button is-success is-outlined is-large" @click="login">Login</button>
+
                             <div class="forgot-password">
                                 <p>
                                     <a href="#">Forgot password</a>
                                 </p>
                             </div>
-    
-                        </div>
-    
+
+                        </form>
+
                     </div>
                 </div>
             </section>
-    
+
         </div>
     </div>
 </template>
@@ -86,6 +84,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+form label {
+  display: block;
+  margin-bottom: 1.2rem;
+}
 
+form input {
+  display: block;
+}
 </style>
 
